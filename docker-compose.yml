@@ -1,0 +1,26 @@
+version: '2'
+services:
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=ADMIN
+      - INFLUXDB_ADMIN_PASSWORD=ADMIN
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=ADMIN
+      - GF_SECURITY_ADMIN_PASSWORD=ADMIN
+volumes:
+  influxdb-storage:
+  grafana-storage:
